@@ -64,9 +64,49 @@ Download the latest release from the [Releases](https://github.com/ljj727/labele
 | Feature | Requirement |
 |---------|-------------|
 | Basic labeling | None |
-| SAM Interactive | NVIDIA GPU + CUDA driver |
+| SAM Interactive | NVIDIA GPU + CUDA driver + ONNX model |
 | Auto Labeling | Docker |
 | Video extraction | ffmpeg |
+
+---
+
+## SAM Interactive Setup
+
+SAM Interactive uses ONNX models for point-click segmentation. You need to prepare a zip file containing the model files.
+
+### 1. Download models
+
+Download SAM ONNX models from HuggingFace (e.g., [SAM2 ONNX](https://huggingface.co/models?search=sam2+onnx) or your own exported models).
+
+Required files:
+```
+vision_encoder_fp16.onnx
+vision_encoder_fp16.onnx_data
+prompt_encoder_mask_decoder_fp16.onnx
+prompt_encoder_mask_decoder_fp16.onnx_data
+```
+
+### 2. Create zip
+
+Bundle the 4 files into a single zip:
+```bash
+zip sam_models.zip \
+  vision_encoder_fp16.onnx \
+  vision_encoder_fp16.onnx_data \
+  prompt_encoder_mask_decoder_fp16.onnx \
+  prompt_encoder_mask_decoder_fp16.onnx_data
+```
+
+### 3. Load in Labelee
+
+1. Open **Settings** (gear icon in sidebar)
+2. Under **SAM Interactive**, click **"모델 업로드 (.zip)"**
+3. Select the zip file
+4. Wait for loading (first time may take ~30 seconds)
+
+Once loaded, use the **C** key in the labeling view to activate SAM mode. Click on an object to get a bounding box / polygon.
+
+> **Note**: SAM requires an NVIDIA GPU with CUDA. It will not work on CPU-only or Mac environments.
 
 ---
 

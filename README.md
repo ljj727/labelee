@@ -1,4 +1,4 @@
-# Labelee
+# LMO
 
 Desktop image annotation and labeling tool for computer vision.
 
@@ -47,7 +47,7 @@ Desktop image annotation and labeling tool for computer vision.
 
 ## Downloads
 
-Download the latest release from the [Releases](https://github.com/ljj727/labelee/releases) page.
+Download the latest release from the [Releases](https://github.com/ljj727/lmo/releases) page.
 
 | Platform | File |
 |----------|------|
@@ -94,7 +94,7 @@ zip sam_models.zip \
   prompt_encoder_mask_decoder_fp16.onnx_data
 ```
 
-### 3. Load in Labelee
+### 3. Load in LMO
 
 1. Open **Settings** (gear icon in sidebar)
 2. Under **SAM Interactive**, click **"모델 업로드 (.zip)"**

@@ -1,160 +1,153 @@
-# LMO
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ljj727/lmo/main/assets/icon.svg" width="80" alt="LMO" />
+</p>
 
-Desktop image annotation and labeling tool for computer vision.
+<h1 align="center">LMO</h1>
+<p align="center"><strong>Label Management & Operations</strong></p>
+<p align="center">Desktop image annotation tool for computer vision</p>
 
-![License](https://img.shields.io/badge/License-MIT-green)
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-blue" alt="Platform" />
+  <img src="https://img.shields.io/badge/Electron-33-47848F?logo=electron&logoColor=white" alt="Electron" />
+  <img src="https://img.shields.io/github/v/release/ljj727/lmo?include_prereleases&label=Release" alt="Release" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/ljj727/lmo/releases"><strong>Download</strong></a>
+</p>
+
+---
+
+## Overview
+
+LMO is a lightweight desktop labeling tool built with Electron. Create bounding boxes, polygons, and keypoints with skeleton — import and export in COCO, CVAT, and YOLO formats.
 
 ---
 
 ## Features
 
-### Annotation Tools
-- **Bounding Box** — Click and drag to draw, resize handles, arrow key fine-tuning
-- **Polygon** — Click to place vertices, right-click to delete, click edge to insert point
-- **Keypoint** — Template-based with skeleton connections, multi-select drag
-- **SAM Interactive** — Click to segment with SAM model (GPU required)
+### Annotation
+| Tool | Description |
+|------|-------------|
+| **BBox** | Click & drag, resize handles, arrow key nudge |
+| **Polygon** | Vertex placement, edge insert, right-click delete |
+| **Keypoint** | Per-class templates with skeleton, multi-select drag |
+| **SAM** | Interactive point-click segmentation (NVIDIA GPU) |
 
-### Labeling Workflow
-- **Class Management** — Create, edit, delete with color picker
-- **Keypoint Templates** — Define per-class keypoint names with auto-skeleton
-- **Label Lock** — Prevent accidental edits (L key)
-- **Image Tags** — Notion-style multi-select tags with auto-complete
-- **Undo/Redo** — Ctrl+Z / Ctrl+Y
-- **Copy/Paste** — Ctrl+C/V with offset duplication
-- **Multi-select** — Ctrl+click, Shift+click range select
+### Workflow
+- Undo / Redo (`Ctrl+Z` / `Ctrl+Y`)
+- Copy / Paste with offset (`Ctrl+C` / `Ctrl+V`)
+- Multi-select (`Ctrl+Click`, `Shift+Click`)
+- Label lock — prevent accidental edits (`L`)
+- Image tags — Notion-style multi-select with auto-complete
 
-### Data Management
-- **Project / Dataset** structure
-- **Dataset Roles** — train / val / test badges
-- **Import** — COCO, CVAT XML, YOLO formats
-- **Export** — COCO, CVAT XML, YOLO (to `annotations/` folder)
-- **Video Frame Extraction** — ffmpeg-based, drag & drop support
-- **Image Move** — Move images between datasets with labels
-- **Sync** — Detect filesystem changes automatically
-
-### Auto Labeling (Docker)
-- SAM3 text-prompt based object detection
-- Docker container execution with real-time log streaming
-- Setup via Settings page
+### Data
+- **Project → Dataset** structure with roles (train / val / test)
+- **Import**: COCO, CVAT XML, YOLO, images, video frames
+- **Export**: COCO, CVAT XML, YOLO → `annotations/` folder
+- Move images between datasets with labels
+- Filesystem sync detection
 
 ### UI
-- **Dark / Light / System** theme
-- **Customizable keyboard shortcuts**
-- **Statistics dashboard** — Class distribution, tag usage, labeling progress
-- **Tag-based image filtering**
+- Dark / Light / System theme
+- Customizable keyboard shortcuts
+- Statistics dashboard (class distribution, progress, tags)
+- Tag-based image filtering
 
 ---
 
-## Downloads
+## Download
 
-Download the latest release from the [Releases](https://github.com/ljj727/lmo/releases) page.
+Get the latest build from [**Releases**](https://github.com/ljj727/lmo/releases).
 
-| Platform | File |
-|----------|------|
-| **Linux** | `.AppImage` (portable) or `.deb` (Ubuntu/Debian) |
-| **Windows** | `.exe` installer |
+| Platform | File | Note |
+|----------|------|------|
+| Linux | `.AppImage` | Portable, no install |
+| Linux | `.deb` | Ubuntu / Debian |
+| Windows | `.exe` | NSIS installer |
 
 ---
 
-## Requirements
+## Quick Start
 
-| Feature | Requirement |
-|---------|-------------|
-| Basic labeling | None |
-| SAM Interactive | NVIDIA GPU + CUDA driver + ONNX model |
-| Auto Labeling | Docker |
-| Video extraction | ffmpeg |
+1. **Download & install** from Releases
+2. **Create a project** — select a folder
+3. **Create a dataset** — give it a name
+4. **Import images** — drag & drop, import from folder, or extract video frames
+5. **Start labeling** — click an image to open the annotation view
 
 ---
 
 ## SAM Interactive Setup
 
-SAM Interactive uses ONNX models for point-click segmentation. You need to prepare a zip file containing the model files.
+Point-click segmentation powered by ONNX Runtime. Requires **NVIDIA GPU + CUDA**.
 
-### 1. Download models
+### Prepare model
 
-Download SAM ONNX models from HuggingFace (e.g., [SAM2 ONNX](https://huggingface.co/models?search=sam2+onnx) or your own exported models).
+Download SAM ONNX models (e.g. from [HuggingFace](https://huggingface.co/models?search=sam2+onnx)) and zip them:
 
-Required files:
 ```
-vision_encoder_fp16.onnx
-vision_encoder_fp16.onnx_data
-prompt_encoder_mask_decoder_fp16.onnx
-prompt_encoder_mask_decoder_fp16.onnx_data
-```
-
-### 2. Create zip
-
-Bundle the 4 files into a single zip:
-```bash
-zip sam_models.zip \
-  vision_encoder_fp16.onnx \
-  vision_encoder_fp16.onnx_data \
-  prompt_encoder_mask_decoder_fp16.onnx \
-  prompt_encoder_mask_decoder_fp16.onnx_data
+sam_models.zip
+├── vision_encoder_fp16.onnx
+├── vision_encoder_fp16.onnx_data
+├── prompt_encoder_mask_decoder_fp16.onnx
+└── prompt_encoder_mask_decoder_fp16.onnx_data
 ```
 
-### 3. Load in LMO
+### Load in LMO
 
-1. Open **Settings** (gear icon in sidebar)
-2. Under **SAM Interactive**, click **"모델 업로드 (.zip)"**
-3. Select the zip file
-4. Wait for loading (first time may take ~30 seconds)
+**Settings** → **SAM Interactive** → **모델 업로드 (.zip)** → select zip → done.
 
-Once loaded, use the **C** key in the labeling view to activate SAM mode. Click on an object to get a bounding box / polygon.
+Press **C** in labeling view to activate SAM mode.
 
-> **Note**: SAM requires an NVIDIA GPU with CUDA. It will not work on CPU-only or Mac environments.
+> SAM will not work on CPU-only or Mac environments.
 
 ---
 
 ## Keyboard Shortcuts
 
-All shortcuts are customizable in Settings.
+All shortcuts are customizable in **Settings**.
 
-| Shortcut | Action |
-|----------|--------|
-| `V` | Select tool |
-| `B` | BBox / Polygon tool |
-| `K` | Keypoint tool |
-| `C` | SAM tool (if loaded) |
-| `H` | Toggle label visibility |
-| `T` | Toggle class name display |
-| `L` | Toggle label lock |
-| `F` | Fit to screen |
-| `G` | Toggle image list |
-| `Ctrl+Z` | Undo |
-| `Ctrl+Y` | Redo |
-| `Ctrl+C/V` | Copy / Paste labels |
-| `Ctrl+A` | Select all |
-| `Arrow keys` | Move label 1px (Shift: 10px) |
-| `Delete` | Delete selected |
-| `Space+Drag` | Pan canvas |
-| `Scroll` | Zoom |
+| Key | Action | Key | Action |
+|-----|--------|-----|--------|
+| `V` | Select | `Ctrl+Z` | Undo |
+| `B` | BBox / Polygon | `Ctrl+Y` | Redo |
+| `K` | Keypoint | `Ctrl+C/V` | Copy / Paste |
+| `C` | SAM | `Ctrl+A` | Select all |
+| `H` | Toggle labels | `Delete` | Delete selected |
+| `T` | Toggle names | `Arrow` | Move 1px |
+| `L` | Lock label | `Shift+Arrow` | Move 10px |
+| `F` | Fit to screen | `Space+Drag` | Pan |
+| `G` | Image list | `Scroll` | Zoom |
 
 ---
 
 ## Supported Formats
 
-### Import
-| Format | Source |
-|--------|--------|
-| COCO | `coco.json` + images |
-| CVAT | `annotations.xml` + images |
-| YOLO | `data.yaml` + images/labels |
-| Images | jpg, png, bmp, webp |
-| Video | mp4, avi, mov, mkv, webm (frame extraction) |
+| | Import | Export |
+|---|--------|--------|
+| **COCO** | `*.json` + images | `annotations/coco.json` |
+| **CVAT** | `annotations.xml` + images | `annotations/annotations.xml` |
+| **YOLO** | `data.yaml` + images/labels | `annotations/labels/*.txt` + `data.yaml` |
+| **Image** | jpg, png, bmp, webp | — |
+| **Video** | mp4, avi, mov, mkv, webm | frame extraction via ffmpeg |
 
-### Export
-| Format | Output |
-|--------|--------|
-| COCO | `annotations/coco.json` |
-| CVAT | `annotations/annotations.xml` |
-| YOLO | `annotations/labels/*.txt` + `data.yaml` |
+Keypoint data is preserved across all formats.
 
-All exports include keypoint data where applicable.
+---
+
+## Requirements
+
+| Feature | Requires |
+|---------|----------|
+| Labeling | Nothing — works offline |
+| SAM Interactive | NVIDIA GPU + CUDA driver |
+| Auto Labeling | Docker |
+| Video frames | ffmpeg |
 
 ---
 
 ## License
 
-[MIT License](LICENSE) - Free to use.
+[MIT](LICENSE)
